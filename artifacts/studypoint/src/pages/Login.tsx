@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 
 export default function Login() {
   const [tab, setTab] = useState<"login" | "signup">("login");
   const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [, navigate] = useLocation();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    navigate("/dashboard");
   };
 
   return (

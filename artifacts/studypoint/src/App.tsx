@@ -11,6 +11,7 @@ import Courses from "@/pages/Courses";
 import Pricing from "@/pages/Pricing";
 import Resources from "@/pages/Resources";
 import Login from "@/pages/Login";
+import Dashboard from "@/pages/Dashboard";
 
 const queryClient = new QueryClient();
 
@@ -147,6 +148,9 @@ function Router() {
             </Route>
             <Route path="/login">
               <AnimatedPage><Login /></AnimatedPage>
+            </Route>
+            <Route path="/dashboard">
+              <AnimatedPage><Dashboard /></AnimatedPage>
             </Route>
             <Route>
               <AnimatedPage><NotFound /></AnimatedPage>
