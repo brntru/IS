@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
 import Gallery from "@/pages/Gallery";
+import Preview from "@/pages/Preview";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +40,9 @@ function Navbar() {
           </Link>
           <Link href="/gallery" className={`text-sm font-medium transition-colors ${location === "/gallery" ? "text-blue-600" : "text-gray-600 hover:text-blue-600"}`}>
             About Us
+          </Link>
+          <Link href="/preview" className={`text-sm font-medium transition-colors ${location === "/preview" ? "text-blue-600" : "text-gray-600 hover:text-blue-600"}`}>
+            Preview
           </Link>
           <Link href="/login" className="text-sm font-medium bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
             Login/Sign Up
@@ -80,6 +84,7 @@ function Router() {
         <Switch>
           <Route path="/" component={Home} />
           <Route path="/gallery" component={Gallery} />
+          <Route path="/preview" component={Preview} />
           <Route component={NotFound} />
         </Switch>
       </main>
