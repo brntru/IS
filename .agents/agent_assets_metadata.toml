@@ -6,3 +6,9 @@ id = "0QAb3gqCLtNBitI8UTIsP"
 uri = "file://studypoint.tar.gz"
 type = "unspecified"
 title = "StudyPoint Project (tar.gz)"
+
+[[outputs]]
+id = "9uFIitwBXzCTgwWYfPA4P"
+uri = "file://studypoint-github.tar.gz"
+type = "unspecified"
+title = "StudyPoint — GitHub Ready Package"
