@@ -60,7 +60,7 @@ export default function Home() {
               Bring yourself high-quality at anytime with your study experience, and condition, anywhere.
             </p>
             <Link
-              href="/courses"
+              href="/preview"
               className="inline-block bg-green-500 hover:bg-green-600 text-white font-semibold px-7 py-3 rounded-lg transition-colors shadow-lg"
             >
               Explore Our Courses
