@@ -323,23 +323,53 @@
     </main>
 
     <script>
-        // Force video autoplay on page load
-        window.addEventListener('load', function() {
+        // Persist video autoplay state across page refreshes
+        document.addEventListener('DOMContentLoaded', function() {
             const video = document.getElementById('heroVideo');
+            
             if (video) {
-                video.play().catch(function(error) {
-                    console.log('Autoplay prevented:', error);
+                // Check if user previously interacted with video
+                const shouldAutoplay = localStorage.getItem('videoAutoplay') !== 'false';
+                
+                if (shouldAutoplay) {
+                    // Wait a bit for video to be ready, then try to play
+                    setTimeout(function() {
+                        const playPromise = video.play();
+                        
+                        if (playPromise !== undefined) {
+                            playPromise
+                                .then(function() {
+                                    console.log('Video autoplay started');
+                                    localStorage.setItem('videoAutoplay', 'true');
+                                })
+                                .catch(function(error) {
+                                    console.log('Autoplay prevented:', error);
+                                });
+                        }
+                    }, 500);
+                }
+                
+                // Track when user plays/pauses
+                video.addEventListener('play', function() {
+                    localStorage.setItem('videoAutoplay', 'true');
+                });
+                
+                video.addEventListener('pause', function() {
+                    localStorage.setItem('videoAutoplay', 'false');
                 });
             }
         });
 
-        // Also try to play immediately if video is ready
-        document.addEventListener('DOMContentLoaded', function() {
+        // Also try on window load event
+        window.addEventListener('load', function() {
             const video = document.getElementById('heroVideo');
-            if (video) {
-                video.play().catch(function(error) {
-                    console.log('Autoplay prevented:', error);
-                });
+            
+            if (video && localStorage.getItem('videoAutoplay') === 'true') {
+                setTimeout(function() {
+                    video.play().catch(function(error) {
+                        console.log('Autoplay error on load:', error);
+                    });
+                }, 200);
             }
         });
     </script>
