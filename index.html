@@ -268,7 +268,7 @@
         </div>
         <div class="hero-video-container">
             <!-- Autoplayed loop muted video setup -->
-            <video autoplay loop muted playsinline>
+            <video id="heroVideo" autoplay loop muted playsinline>
                 <source src="video.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
@@ -321,6 +321,28 @@
             </div>
         </aside>
     </main>
+
+    <script>
+        // Force video autoplay on page load
+        window.addEventListener('load', function() {
+            const video = document.getElementById('heroVideo');
+            if (video) {
+                video.play().catch(function(error) {
+                    console.log('Autoplay prevented:', error);
+                });
+            }
+        });
+
+        // Also try to play immediately if video is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            const video = document.getElementById('heroVideo');
+            if (video) {
+                video.play().catch(function(error) {
+                    console.log('Autoplay prevented:', error);
+                });
+            }
+        });
+    </script>
 
 </body>
 </html>
