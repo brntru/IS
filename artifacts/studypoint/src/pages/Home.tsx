@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
 
 const heroVideo = `${import.meta.env.BASE_URL}hero.mp4`;
@@ -41,13 +41,26 @@ const testimonials = [
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
     video.muted = true;
-    video.play().catch(() => {});
+    video.defaultMuted = true;
+    const tryPlay = () => {
+      video.play().then(() => setPaused(false)).catch(() => setPaused(true));
+    };
+    video.addEventListener("canplay", tryPlay, { once: true });
+    tryPlay();
+    return () => video.removeEventListener("canplay", tryPlay);
   }, []);
+
+  const handleOverlayClick = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.play().then(() => setPaused(false)).catch(() => {});
+  };
 
   return (
     <div>
@@ -61,7 +74,22 @@ export default function Home() {
           loop
           muted
           playsInline
+          preload="auto"
         />
+        {paused && (
+          <button
+            onClick={handleOverlayClick}
+            className="absolute inset-0 z-20 flex items-end justify-end p-6 cursor-default"
+            aria-label="Play background video"
+          >
+            <span className="flex items-center gap-2 bg-black/40 hover:bg-black/60 text-white text-xs font-medium px-3 py-2 rounded-full backdrop-blur-sm transition-colors cursor-pointer">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+                <path d="M3 2l7 4-7 4V2z"/>
+              </svg>
+              Play video
+            </span>
+          </button>
+        )}
         <div className="absolute inset-0 bg-gradient-to-r from-blue-900/70 via-blue-900/30 to-transparent" />
         <div className="relative z-10 max-w-6xl mx-auto px-6 py-24">
           <div className="max-w-xl">
