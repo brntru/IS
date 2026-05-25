@@ -1,7 +1,7 @@
 import { Switch, Route, Router as WouterRouter, Link, useLocation } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
-import { ThemeProvider, useTheme } from "next-themes";
+import { useDarkMode } from "@/hooks/use-dark-mode";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
@@ -26,15 +26,14 @@ const navLinks = [
 ];
 
 function DarkToggle() {
-  const { theme, setTheme } = useTheme();
+  const { dark, toggle } = useDarkMode();
   return (
     <button
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      onClick={toggle}
       className="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
       aria-label="Toggle dark mode"
     >
-      <span className="block dark:hidden text-base">🌙</span>
-      <span className="hidden dark:block text-base">☀️</span>
+      {dark ? "☀️" : "🌙"}
     </button>
   );
 }
@@ -181,16 +180,14 @@ function Router() {
 
 function App() {
   return (
-    <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-            <Router />
-          </WouterRouter>
-          <Toaster />
-        </TooltipProvider>
-      </QueryClientProvider>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+          <Router />
+        </WouterRouter>
+        <Toaster />
+      </TooltipProvider>
+    </QueryClientProvider>
   );
 }
 
