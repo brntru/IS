@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Link } from "wouter";
-import heroVideo from "@assets/video_1779589351718.mp4";
+
+const heroVideo = `${import.meta.env.BASE_URL}hero.mp4`;
 
 const courses = [
   {
@@ -54,14 +55,14 @@ export default function Home() {
       <section className="relative min-h-[calc(100vh-4rem)] flex items-center overflow-hidden bg-gray-900">
         <video
           ref={videoRef}
-          className="absolute inset-0 w-full h-full object-cover opacity-60"
+          className="absolute inset-0 w-full h-full object-cover opacity-90"
           src={heroVideo}
           autoPlay
           loop
           muted
           playsInline
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 via-blue-900/50 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/70 via-blue-900/30 to-transparent" />
         <div className="relative z-10 max-w-6xl mx-auto px-6 py-24">
           <div className="max-w-xl">
             <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-4">
