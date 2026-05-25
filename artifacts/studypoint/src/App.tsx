@@ -1,6 +1,7 @@
 import { Switch, Route, Router as WouterRouter, Link, useLocation } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
+import { ThemeProvider, useTheme } from "next-themes";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
@@ -24,11 +25,25 @@ const navLinks = [
   { label: "Preview", href: "/preview" },
 ];
 
+function DarkToggle() {
+  const { theme, setTheme } = useTheme();
+  return (
+    <button
+      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      className="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+      aria-label="Toggle dark mode"
+    >
+      <span className="block dark:hidden text-base">🌙</span>
+      <span className="hidden dark:block text-base">☀️</span>
+    </button>
+  );
+}
+
 function Navbar() {
   const [location] = useLocation();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-100 dark:border-gray-800 shadow-sm">
       <div className="max-w-6xl mx-auto px-6 flex items-center justify-between h-16">
         <Link href="/" className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center">
@@ -38,14 +53,14 @@ function Navbar() {
               <path d="M2 12l10 5 10-5"/>
             </svg>
           </div>
-          <span className="text-lg font-bold text-gray-900">StudyPoint</span>
+          <span className="text-lg font-bold text-gray-900 dark:text-white">StudyPoint</span>
         </Link>
         <div className="flex items-center gap-6">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={`text-sm font-medium transition-colors ${location === link.href ? "text-blue-600" : "text-gray-600 hover:text-blue-600"}`}
+              className={`text-sm font-medium transition-colors ${location === link.href ? "text-blue-600" : "text-gray-600 dark:text-gray-300 hover:text-blue-600"}`}
             >
               {link.label}
             </Link>
@@ -53,6 +68,7 @@ function Navbar() {
           <Link href="/login" className="text-sm font-medium bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
             Login/Sign Up
           </Link>
+          <DarkToggle />
         </div>
       </div>
     </nav>
@@ -165,14 +181,16 @@ function Router() {
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-          <Router />
-        </WouterRouter>
-        <Toaster />
-      </TooltipProvider>
-    </QueryClientProvider>
+    <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+            <Router />
+          </WouterRouter>
+          <Toaster />
+        </TooltipProvider>
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 }
 
