@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { Link } from "wouter";
 import heroVideo from "@assets/video_1779589351718.mp4";
 
@@ -38,11 +39,21 @@ const testimonials = [
 ];
 
 export default function Home() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.muted = true;
+    video.play().catch(() => {});
+  }, []);
+
   return (
     <div>
       {/* Hero Video Section */}
       <section className="relative min-h-[calc(100vh-4rem)] flex items-center overflow-hidden bg-gray-900">
         <video
+          ref={videoRef}
           className="absolute inset-0 w-full h-full object-cover opacity-60"
           src={heroVideo}
           autoPlay
